@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>Calculadora de Juros Compostos</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial, sans-serif;
+    }
+
+    body{
+      background:#0f172a;
+      color:white;
+      padding:30px;
+    }
+
+    .container{
+      max-width:1200px;
+      margin:auto;
+    }
+
+    h1{
+      font-size:32px;
+      margin-bottom:25px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:350px 1fr;
+      gap:25px;
+    }
+
+    .card{
+      background:#1e293b;
+      border-radius:18px;
+      padding:22px;
+      box-shadow:0 10px 30px rgba(0,0,0,.25);
+    }
+
+    .inputs{
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    }
+
+    label{
+      display:block;
+      margin-bottom:6px;
+      font-size:14px;
+      color:#cbd5e1;
+    }
+
+    input{
+      width:100%;
+      padding:12px;
+      border:none;
+      border-radius:10px;
+      background:#334155;
+      color:white;
+      font-size:16px;
+      outline:none;
+    }
+
+    button{
+      border:none;
+      padding:14px;
+      border-radius:12px;
+      background:#3b82f6;
+      color:white;
+      font-size:16px;
+      cursor:pointer;
+      transition:.2s;
+    }
+
+    button:hover{
+      opacity:.9;
+    }
+
+    .results{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:15px;
+      margin-bottom:25px;
+    }
+
+    .result-box{
+      background:#334155;
+      border-radius:14px;
+      padding:18px;
+    }
+
+    .result-box span{
+      display:block;
+      font-size:13px;
+      color:#cbd5e1;
+      margin-bottom:8px;
+    }
+
+    .result-box strong{
+      font-size:22px;
+    }
+
+    .table-container{
+      margin-top:25px;
+      max-height:400px;
+      overflow:auto;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+    }
+
+    th, td{
+      padding:12px;
+      border-bottom:1px solid #334155;
+      text-align:left;
+    }
+
+    th{
+      color:#94a3b8;
+    }
+
+    canvas{
+      margin-top:20px;
+    }
+
+    @media(max-width:950px){
+
+      .grid{
+        grid-template-columns:1fr;
+      }
+
+      .results{
+        grid-template-columns:1fr 1fr;
+      }
+
+    }
+
+    @media(max-width:600px){
+
+      .results{
+        grid-template-columns:1fr;
+      }
+
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <h1>Calculadora de Juros Compostos</h1>
+
+    <div class="grid">
+
+      <!-- FORM -->
+      <div class="card">
+
+        <div class="inputs">
+
+          <div>
+            <label>Saldo Inicial (R$)</label>
+            <input
+              type="number"
+              id="saldoInicial"
+              value="0"
+            />
+          </div>
+
+          <div>
+            <label>Aporte Mensal (R$)</label>
+            <input
+              type="number"
+              id="aporteMensal"
+              value="500"
+            />
+          </div>
+
+          <div>
+            <label>Taxa de Juros Anual (%)</label>
+            <input
+              type="number"
+              id="taxa"
+              step="0.01"
+              value="12"
+            />
+          </div>
+
+          <div>
+            <label>Tempo (anos)</label>
+            <input
+              type="number"
+              id="anos"
+              value="10"
+            />
+          </div>
+
+          <div>
+            <label>Reajuste do Aporte (%)</label>
+            <input
+              type="number"
+              id="reajuste"
+              step="0.01"
+              value="10"
+            />
+          </div>
+
+          <div>
+            <label>Reajustar a cada quantos anos?</label>
+            <input
+              type="number"
+              id="periodoReajuste"
+              value="1"
+            />
+          </div>
+
+          <button onclick="calcular()">
+            Calcular
+          </button>
+
+        </div>
+
+      </div>
+
+      <!-- RESULTADOS -->
+      <div class="card">
+
+        <div class="results">
+
+          <div class="result-box">
+            <span>Patrimônio Final</span>
+            <strong id="patrimonioFinal">
+              R$ 0
+            </strong>
+          </div>
+
+          <div class="result-box">
+            <span>Total Investido</span>
+            <strong id="totalInvestido">
+              R$ 0
+            </strong>
+          </div>
+
+          <div class="result-box">
+            <span>Total em Juros</span>
+            <strong id="totalJuros">
+              R$ 0
+            </strong>
+          </div>
+
+          <div class="result-box">
+            <span>Taxa Mensal Equivalente</span>
+            <strong id="taxaMensal">
+              0%
+            </strong>
+          </div>
+
+        </div>
+
+        <canvas id="grafico"></canvas>
+
+        <div class="table-container">
+
+          <table>
+
+            <thead>
+              <tr>
+                <th>Mês</th>
+                <th>Aporte</th>
+                <th>Saldo</th>
+              </tr>
+            </thead>
+
+            <tbody id="tabelaBody"></tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+
+    let chart;
+
+    function formatarMoeda(valor){
+
+      return valor.toLocaleString('pt-BR', {
+        style:'currency',
+        currency:'BRL'
+      });
+
+    }
+
+    function calcular(){
+
+      const saldoInicial =
+        parseFloat(
+          document.getElementById('saldoInicial').value
+        );
+
+      let aporteMensal =
+        parseFloat(
+          document.getElementById('aporteMensal').value
+        );
+
+      const taxaAnual =
+        parseFloat(
+          document.getElementById('taxa').value
+        ) / 100;
+
+      const anos =
+        parseInt(
+          document.getElementById('anos').value
+        );
+
+      const reajuste =
+        parseFloat(
+          document.getElementById('reajuste').value
+        ) / 100;
+
+      const periodoReajuste =
+        parseInt(
+          document.getElementById('periodoReajuste').value
+        );
+
+      // CONVERSÃO CORRETA
+      const taxaMensal =
+        Math.pow(1 + taxaAnual, 1 / 12) - 1;
+
+      let saldo = saldoInicial;
+
+      let totalInvestido = saldoInicial;
+
+      const totalMeses = anos * 12;
+
+      const labels = [];
+      const dados = [];
+
+      const tabela =
+        document.getElementById('tabelaBody');
+
+      tabela.innerHTML = '';
+
+      for(let mes = 1; mes <= totalMeses; mes++){
+
+        saldo += aporteMensal;
+
+        totalInvestido += aporteMensal;
+
+        saldo *= (1 + taxaMensal);
+
+        // REAJUSTE DO APORTE
+        if(
+          mes % (periodoReajuste * 12) === 0
+        ){
+
+          aporteMensal *= (1 + reajuste);
+
+        }
+
+        labels.push(`Mês ${mes}`);
+
+        dados.push(saldo);
+
+        tabela.innerHTML += `
+          <tr>
+            <td>${mes}</td>
+            <td>${formatarMoeda(aporteMensal)}</td>
+            <td>${formatarMoeda(saldo)}</td>
+          </tr>
+        `;
+
+      }
+
+      const juros =
+        saldo - totalInvestido;
+
+      // RESULTADOS
+
+      document.getElementById(
+        'patrimonioFinal'
+      ).innerText =
+        formatarMoeda(saldo);
+
+      document.getElementById(
+        'totalInvestido'
+      ).innerText =
+        formatarMoeda(totalInvestido);
+
+      document.getElementById(
+        'totalJuros'
+      ).innerText =
+        formatarMoeda(juros);
+
+      document.getElementById(
+        'taxaMensal'
+      ).innerText =
+        `${(taxaMensal * 100).toFixed(2)}%`;
+
+      // GRAFICO
+
+      const ctx =
+        document.getElementById('grafico');
+
+      if(chart){
+        chart.destroy();
+      }
+
+      chart = new Chart(ctx, {
+
+        type:'line',
+
+        data:{
+          labels,
+          datasets:[{
+            label:'Patrimônio',
+            data:dados,
+            borderWidth:3,
+            tension:.3
+          }]
+        },
+
+        options:{
+
+          responsive:true,
+
+          plugins:{
+            legend:{
+              labels:{
+                color:'white'
+              }
+            }
+          },
+
+          scales:{
+
+            x:{
+              ticks:{
+                color:'white'
+              }
+            },
+
+            y:{
+              ticks:{
+                color:'white'
+              }
+            }
+
+          }
+
+        }
+
+      });
+
+    }
+
+    calcular();
+
+  </script>
+
+</body>
+</html>
