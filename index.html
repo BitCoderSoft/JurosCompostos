@@ -10,163 +10,182 @@
 
   <style>
 
-   *{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:Arial, sans-serif;
-}
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial, sans-serif;
+    }
 
-body{
-  background:#0f172a;
-  color:white;
-  padding:22px;
-}
+    body{
+      background:#0f172a;
+      color:white;
+      padding:22px;
+    }
 
-.container{
-  max-width:1100px;
-  margin:auto;
-}
+    .container{
+      max-width:1100px;
+      margin:auto;
+    }
 
-h1{
-  font-size:26px;
-  margin-bottom:20px;
-  font-weight:600;
-}
+    h1{
+      font-size:26px;
+      margin-bottom:20px;
+      font-weight:600;
+    }
 
-.grid{
-  display:grid;
-  grid-template-columns:320px 1fr;
-  gap:20px;
-}
+    .grid{
+      display:grid;
+      grid-template-columns:320px 1fr;
+      gap:20px;
+    }
 
-.card{
-  background:#1e293b;
-  border-radius:16px;
-  padding:18px;
-  box-shadow:0 8px 25px rgba(0,0,0,.22);
-}
+    .card{
+      background:#1e293b;
+      border-radius:16px;
+      padding:18px;
+      box-shadow:0 8px 25px rgba(0,0,0,.22);
+    }
 
-.inputs{
-  display:flex;
-  flex-direction:column;
-  gap:14px;
-}
+    .inputs{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
 
-label{
-  display:block;
-  margin-bottom:5px;
-  font-size:12px;
-  color:#cbd5e1;
-}
+    label{
+      display:block;
+      margin-bottom:5px;
+      font-size:12px;
+      color:#cbd5e1;
+    }
 
-input{
-  width:100%;
-  padding:10px 12px;
-  border:none;
-  border-radius:8px;
-  background:#334155;
-  color:white;
-  font-size:14px;
-  outline:none;
-}
+    input{
+      width:100%;
+      padding:10px 12px;
+      border:none;
+      border-radius:8px;
+      background:#334155;
+      color:white;
+      font-size:14px;
+      outline:none;
+    }
 
-button{
-  border:none;
-  padding:12px;
-  border-radius:10px;
-  background:#3b82f6;
-  color:white;
-  font-size:14px;
-  cursor:pointer;
-  transition:.2s;
-  margin-top:4px;
-}
+    button{
+      border:none;
+      padding:12px;
+      border-radius:10px;
+      background:#2563eb;
+      color:white;
+      font-size:14px;
+      cursor:pointer;
+      transition:.2s;
+      margin-top:4px;
+      font-weight:600;
+    }
 
-button:hover{
-  opacity:.9;
-}
+    button:hover{
+      opacity:.9;
+    }
 
-.results{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:12px;
-  margin-bottom:20px;
-}
+    .results{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:12px;
+      margin-bottom:20px;
+    }
 
-.result-box{
-  background:#334155;
-  border-radius:12px;
-  padding:14px;
-}
+    .result-box{
+      background:#334155;
+      border-radius:12px;
+      padding:14px;
+    }
 
-.result-box span{
-  display:block;
-  font-size:11px;
-  color:#cbd5e1;
-  margin-bottom:6px;
-}
+    .result-box span{
+      display:block;
+      font-size:11px;
+      color:#cbd5e1;
+      margin-bottom:6px;
+    }
 
-.result-box strong{
-  font-size:18px;
-  font-weight:600;
-}
+    .result-box strong{
+      font-size:18px;
+      font-weight:700;
+    }
 
-.table-container{
-  margin-top:22px;
-  max-height:350px;
-  overflow:auto;
-}
+    /* CORES DIFERENTES */
 
-table{
-  width:100%;
-  border-collapse:collapse;
-}
+    .patrimonio{
+      color:#7CFF4F;
+    }
 
-th,
-td{
-  padding:10px;
-  border-bottom:1px solid #334155;
-  text-align:left;
-  font-size:13px;
-}
+    .investido{
+      color:#4DA3FF;
+    }
 
-th{
-  color:#94a3b8;
-  font-size:12px;
-}
+    .juros{
+      color:#FFD54A;
+    }
 
-canvas{
-  margin-top:10px;
-}
+    .taxa{
+      color:#d8b4fe;
+    }
 
-.footer{
-  margin-top:28px;
-  text-align:center;
-  color:#94a3b8;
-  font-size:12px;
-  opacity:.8;
-}
+    .table-container{
+      margin-top:22px;
+      max-height:350px;
+      overflow:auto;
+    }
 
-@media(max-width:950px){
+    table{
+      width:100%;
+      border-collapse:collapse;
+    }
 
-  .grid{
-    grid-template-columns:1fr;
-  }
+    th,
+    td{
+      padding:10px;
+      border-bottom:1px solid #334155;
+      text-align:left;
+      font-size:13px;
+    }
 
-  .results{
-    grid-template-columns:1fr 1fr;
-  }
+    th{
+      color:#94a3b8;
+      font-size:12px;
+    }
 
-}
+    canvas{
+      margin-top:10px;
+    }
 
-@media(max-width:600px){
+    .footer{
+      margin-top:28px;
+      text-align:center;
+      color:#94a3b8;
+      font-size:12px;
+      opacity:.8;
+    }
 
-  .results{
-    grid-template-columns:1fr;
-  }
+    @media(max-width:950px){
 
-}
+      .grid{
+        grid-template-columns:1fr;
+      }
+
+      .results{
+        grid-template-columns:1fr 1fr;
+      }
+
+    }
+
+    @media(max-width:600px){
+
+      .results{
+        grid-template-columns:1fr;
+      }
+
+    }
 
   </style>
 </head>
@@ -254,28 +273,40 @@ canvas{
 
           <div class="result-box">
             <span>Patrimônio Final</span>
-            <strong id="patrimonioFinal">
+            <strong
+              id="patrimonioFinal"
+              class="patrimonio"
+            >
               R$ 0
             </strong>
           </div>
 
           <div class="result-box">
             <span>Total Investido</span>
-            <strong id="totalInvestido">
+            <strong
+              id="totalInvestido"
+              class="investido"
+            >
               R$ 0
             </strong>
           </div>
 
           <div class="result-box">
             <span>Total em Juros</span>
-            <strong id="totalJuros">
+            <strong
+              id="totalJuros"
+              class="juros"
+            >
               R$ 0
             </strong>
           </div>
 
           <div class="result-box">
             <span>Taxa Mensal Equivalente</span>
-            <strong id="taxaMensal">
+            <strong
+              id="taxaMensal"
+              class="taxa"
+            >
               0%
             </strong>
           </div>
@@ -292,6 +323,8 @@ canvas{
               <tr>
                 <th>Mês</th>
                 <th>Aporte</th>
+                <th>Total Investido</th>
+                <th>Juros</th>
                 <th>Saldo</th>
               </tr>
             </thead>
@@ -357,7 +390,6 @@ canvas{
           document.getElementById('periodoReajuste').value
         );
 
-      // CONVERSÃO CORRETA
       const taxaMensal =
         Math.pow(1 + taxaAnual, 1 / 12) - 1;
 
@@ -368,7 +400,10 @@ canvas{
       const totalMeses = anos * 12;
 
       const labels = [];
-      const dados = [];
+
+      const patrimonioData = [];
+      const investidoData = [];
+      const jurosData = [];
 
       const tabela =
         document.getElementById('tabelaBody');
@@ -383,7 +418,7 @@ canvas{
 
         saldo *= (1 + taxaMensal);
 
-        // REAJUSTE DO APORTE
+        // REAJUSTE APORTE
         if(
           mes % (periodoReajuste * 12) === 0
         ){
@@ -392,14 +427,21 @@ canvas{
 
         }
 
+        const jurosAtual =
+          saldo - totalInvestido;
+
         labels.push(`Mês ${mes}`);
 
-        dados.push(saldo);
+        patrimonioData.push(saldo);
+        investidoData.push(totalInvestido);
+        jurosData.push(jurosAtual);
 
         tabela.innerHTML += `
           <tr>
             <td>${mes}</td>
             <td>${formatarMoeda(aporteMensal)}</td>
+            <td>${formatarMoeda(totalInvestido)}</td>
+            <td>${formatarMoeda(jurosAtual)}</td>
             <td>${formatarMoeda(saldo)}</td>
           </tr>
         `;
@@ -445,13 +487,40 @@ canvas{
         type:'line',
 
         data:{
+
           labels,
-          datasets:[{
-            label:'Patrimônio',
-            data:dados,
-            borderWidth:3,
-            tension:.3
-          }]
+
+          datasets:[
+
+            {
+              label:'Patrimônio',
+              data:patrimonioData,
+              borderColor:'#7CFF4F',
+              backgroundColor:'#7CFF4F',
+              borderWidth:3,
+              tension:.3
+            },
+
+            {
+              label:'Total Investido',
+              data:investidoData,
+              borderColor:'#4DA3FF',
+              backgroundColor:'#4DA3FF',
+              borderWidth:3,
+              tension:.3
+            },
+
+            {
+              label:'Juros',
+              data:jurosData,
+              borderColor:'#FFD54A',
+              backgroundColor:'#FFD54A',
+              borderWidth:3,
+              tension:.3
+            }
+
+          ]
+
         },
 
         options:{
@@ -459,11 +528,13 @@ canvas{
           responsive:true,
 
           plugins:{
+
             legend:{
               labels:{
                 color:'white'
               }
             }
+
           },
 
           scales:{
@@ -471,12 +542,18 @@ canvas{
             x:{
               ticks:{
                 color:'white'
+              },
+              grid:{
+                color:'rgba(255,255,255,.05)'
               }
             },
 
             y:{
               ticks:{
                 color:'white'
+              },
+              grid:{
+                color:'rgba(255,255,255,.05)'
               }
             }
 
