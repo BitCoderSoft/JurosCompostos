@@ -10,149 +10,163 @@
 
   <style>
 
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-      font-family:Arial, sans-serif;
-    }
+   *{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial, sans-serif;
+}
 
-    body{
-      background:#0f172a;
-      color:white;
-      padding:30px;
-    }
+body{
+  background:#0f172a;
+  color:white;
+  padding:22px;
+}
 
-    .container{
-      max-width:1200px;
-      margin:auto;
-    }
+.container{
+  max-width:1100px;
+  margin:auto;
+}
 
-    h1{
-      font-size:32px;
-      margin-bottom:25px;
-    }
+h1{
+  font-size:26px;
+  margin-bottom:20px;
+  font-weight:600;
+}
 
-    .grid{
-      display:grid;
-      grid-template-columns:350px 1fr;
-      gap:25px;
-    }
+.grid{
+  display:grid;
+  grid-template-columns:320px 1fr;
+  gap:20px;
+}
 
-    .card{
-      background:#1e293b;
-      border-radius:18px;
-      padding:22px;
-      box-shadow:0 10px 30px rgba(0,0,0,.25);
-    }
+.card{
+  background:#1e293b;
+  border-radius:16px;
+  padding:18px;
+  box-shadow:0 8px 25px rgba(0,0,0,.22);
+}
 
-    .inputs{
-      display:flex;
-      flex-direction:column;
-      gap:18px;
-    }
+.inputs{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
 
-    label{
-      display:block;
-      margin-bottom:6px;
-      font-size:14px;
-      color:#cbd5e1;
-    }
+label{
+  display:block;
+  margin-bottom:5px;
+  font-size:12px;
+  color:#cbd5e1;
+}
 
-    input{
-      width:100%;
-      padding:12px;
-      border:none;
-      border-radius:10px;
-      background:#334155;
-      color:white;
-      font-size:16px;
-      outline:none;
-    }
+input{
+  width:100%;
+  padding:10px 12px;
+  border:none;
+  border-radius:8px;
+  background:#334155;
+  color:white;
+  font-size:14px;
+  outline:none;
+}
 
-    button{
-      border:none;
-      padding:14px;
-      border-radius:12px;
-      background:#3b82f6;
-      color:white;
-      font-size:16px;
-      cursor:pointer;
-      transition:.2s;
-    }
+button{
+  border:none;
+  padding:12px;
+  border-radius:10px;
+  background:#3b82f6;
+  color:white;
+  font-size:14px;
+  cursor:pointer;
+  transition:.2s;
+  margin-top:4px;
+}
 
-    button:hover{
-      opacity:.9;
-    }
+button:hover{
+  opacity:.9;
+}
 
-    .results{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:15px;
-      margin-bottom:25px;
-    }
+.results{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  margin-bottom:20px;
+}
 
-    .result-box{
-      background:#334155;
-      border-radius:14px;
-      padding:18px;
-    }
+.result-box{
+  background:#334155;
+  border-radius:12px;
+  padding:14px;
+}
 
-    .result-box span{
-      display:block;
-      font-size:13px;
-      color:#cbd5e1;
-      margin-bottom:8px;
-    }
+.result-box span{
+  display:block;
+  font-size:11px;
+  color:#cbd5e1;
+  margin-bottom:6px;
+}
 
-    .result-box strong{
-      font-size:22px;
-    }
+.result-box strong{
+  font-size:18px;
+  font-weight:600;
+}
 
-    .table-container{
-      margin-top:25px;
-      max-height:400px;
-      overflow:auto;
-    }
+.table-container{
+  margin-top:22px;
+  max-height:350px;
+  overflow:auto;
+}
 
-    table{
-      width:100%;
-      border-collapse:collapse;
-    }
+table{
+  width:100%;
+  border-collapse:collapse;
+}
 
-    th, td{
-      padding:12px;
-      border-bottom:1px solid #334155;
-      text-align:left;
-    }
+th,
+td{
+  padding:10px;
+  border-bottom:1px solid #334155;
+  text-align:left;
+  font-size:13px;
+}
 
-    th{
-      color:#94a3b8;
-    }
+th{
+  color:#94a3b8;
+  font-size:12px;
+}
 
-    canvas{
-      margin-top:20px;
-    }
+canvas{
+  margin-top:10px;
+}
 
-    @media(max-width:950px){
+.footer{
+  margin-top:28px;
+  text-align:center;
+  color:#94a3b8;
+  font-size:12px;
+  opacity:.8;
+}
 
-      .grid{
-        grid-template-columns:1fr;
-      }
+@media(max-width:950px){
 
-      .results{
-        grid-template-columns:1fr 1fr;
-      }
+  .grid{
+    grid-template-columns:1fr;
+  }
 
-    }
+  .results{
+    grid-template-columns:1fr 1fr;
+  }
 
-    @media(max-width:600px){
+}
 
-      .results{
-        grid-template-columns:1fr;
-      }
+@media(max-width:600px){
 
-    }
+  .results{
+    grid-template-columns:1fr;
+  }
+
+}
 
   </style>
 </head>
@@ -291,6 +305,10 @@
       </div>
 
     </div>
+
+    <footer class="footer">
+      © 2026 Erisvaldo Correia Developer
+    </footer>
 
   </div>
 
