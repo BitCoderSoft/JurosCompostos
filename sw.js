@@ -6,61 +6,43 @@ const ASSETS = [
   './',
   './index.html',
   './manifest.json',
+  './icon-192.png',
+  './icon-512.png',
   'https://cdn.jsdelivr.net/npm/chart.js',
   'https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap'
 ];
 
 // ================= INSTALAÇÃO =================
-self.addEventListener("install", event => {
-  console.log("Service Worker instalando...");
-
+self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => {
-        console.log("Cache aberto");
-        return cache.addAll(ASSETS);
-      })
+    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS)).catch(() => {})
   );
-
-  // 🔥 Permite que a nova versão fique pronta imediatamente
   self.skipWaiting();
 });
 
 // ================= ATIVAÇÃO =================
-self.addEventListener("activate", event => {
-  console.log("Service Worker ativado");
-
+self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then(keys => {
-      return Promise.all(
-        keys.map(key => {
-          if (key !== CACHE_NAME) {
-            console.log("Removendo cache antigo:", key);
-            return caches.delete(key);
-          }
-        })
-      );
-    })
+    caches.keys().then(keys =>
+      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
+    )
   );
-
-  // 🔥 Assume controle imediatamente
   return self.clients.claim();
 });
 
 // ================= FETCH =================
-self.addEventListener("fetch", event => {
+self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        return response || fetch(event.request);
-      })
+    caches.match(event.request).then(response => response || fetch(event.request))
   );
 });
 
 // ================= RECEBER COMANDO DO APP =================
-self.addEventListener("message", event => {
-  if (event.data && event.data.action === "skipWaiting") {
-    console.log("Atualizando para nova versão...");
+self.addEventListener('message', event => {
+  if (event.data && event.data.action === 'skipWaiting') {
     self.skipWaiting();
+  }
+  if (event.data && event.data.tipo === 'GET_VERSION') {
+    event.ports[0]?.postMessage({ version: APP_VERSION, cache: CACHE_NAME });
   }
 });
