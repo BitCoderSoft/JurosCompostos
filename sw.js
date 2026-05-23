@@ -1,5 +1,5 @@
 // ── VERSÃO DO APP ── bumpa aqui a cada deploy
-const CACHE = 'juros-v1.0.1';
+const CACHE_NAME = 'juros-compostos-v1.0.1';
 const APP_VERSION = '1.0.1';
 
 const ASSETS = [
