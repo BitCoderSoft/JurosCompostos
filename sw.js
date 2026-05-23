@@ -1,51 +1,66 @@
 // ── VERSÃO DO APP ── bumpa aqui a cada deploy
-const CACHE = 'juros-v1';
-const APP_VERSION = '1.0.0';
+const CACHE = 'juros-v1.0.1';
+const APP_VERSION = '1.0.1';
 
 const ASSETS = [
   './',
   './index.html',
+  './manifest.json',
   'https://cdn.jsdelivr.net/npm/chart.js',
   'https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap'
 ];
 
-// INSTALL: cacheia assets, mas NÃO faz skipWaiting automático
-// (quem decide quando assumir é o usuário, via banner)
-self.addEventListener('install', e => {
-  e.waitUntil(
-    caches.open(CACHE).then(c => c.addAll(ASSETS)).catch(() => {})
+// ================= INSTALAÇÃO =================
+self.addEventListener("install", event => {
+  console.log("Service Worker instalando...");
+
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => {
+        console.log("Cache aberto");
+        return cache.addAll(ASSETS);
+      })
   );
-  // Não chama skipWaiting() aqui — o SW fica em "waiting"
+
+  // 🔥 Permite que a nova versão fique pronta imediatamente
+  self.skipWaiting();
 });
 
-// ACTIVATE: limpa caches antigos
-self.addEventListener('activate', e => {
-  e.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
-    )
+// ================= ATIVAÇÃO =================
+self.addEventListener("activate", event => {
+  console.log("Service Worker ativado");
+
+  event.waitUntil(
+    caches.keys().then(keys => {
+      return Promise.all(
+        keys.map(key => {
+          if (key !== CACHE_NAME) {
+            console.log("Removendo cache antigo:", key);
+            return caches.delete(key);
+          }
+        })
+      );
+    })
   );
-  self.clients.claim();
+
+  // 🔥 Assume controle imediatamente
+  return self.clients.claim();
 });
 
-// FETCH: cache-first
-self.addEventListener('fetch', e => {
-  e.respondWith(
-    caches.match(e.request).then(r => r || fetch(e.request).then(res => {
-      const clone = res.clone();
-      caches.open(CACHE).then(c => c.put(e.request, clone));
-      return res;
-    })).catch(() => caches.match('./index.html'))
+// ================= FETCH =================
+self.addEventListener("fetch", event => {
+  event.respondWith(
+    caches.match(event.request)
+      .then(response => {
+        return response || fetch(event.request);
+      })
   );
 });
 
-// MENSAGEM: recebe sinal do app para assumir o controle agora
-self.addEventListener('message', e => {
-  if (e.data?.tipo === 'PULAR_ESPERA') {
+// ================= RECEBER COMANDO DO APP =================
+self.addEventListener("message", event => {
+  if (event.data && event.data.action === "skipWaiting") {
+    console.log("Atualizando para nova versão...");
     self.skipWaiting();
-  }
-  // Responde com a versão atual quando solicitado
-  if (e.data?.tipo === 'GET_VERSION') {
-    e.ports[0]?.postMessage({ version: APP_VERSION, cache: CACHE });
   }
 });

@@ -204,6 +204,8 @@
     .input-meta input::-webkit-outer-spin-button,
     .input-meta input::-webkit-inner-spin-button { -webkit-appearance: none; }
 
+    .input-meta input::placeholder { color: var(--muted); opacity: .5; }
+
     /* ── CALCULATE BUTTON ── */
     .btn-calc {
       width: 100%;
@@ -437,6 +439,19 @@
       .section { padding: 0 0 24px; }
 
       .section + .section { padding-top: 0; }
+
+      /* ── Fontes maiores no desktop ── */
+      .app-header h1         { font-size: 22px; }
+      .section-title         { font-size: 13px; }
+      .input-meta label      { font-size: 13px; }
+      .input-meta input      { font-size: 17px; }
+      .result-card .label    { font-size: 12px; }
+      .result-card .value    { font-size: 18px; }
+      .summary-text          { font-size: 15px; }
+      .summary-ratio         { font-size: 34px; }
+      th                     { font-size: 12px; }
+      td                     { font-size: 13px; }
+      .footer                { font-size: 13px; }
     }
 
     @media (min-width: 1100px) {
@@ -580,7 +595,7 @@
             <div class="input-icon" style="background:var(--blue-dim)">💰</div>
             <div class="input-meta">
               <label>Saldo Inicial (R$)</label>
-              <input type="number" id="saldoInicial" value="0" inputmode="decimal"/>
+              <input type="number" id="saldoInicial" placeholder="0,00" inputmode="decimal"/>
             </div>
           </div>
 
@@ -588,7 +603,7 @@
             <div class="input-icon" style="background:var(--green-dim)">📈</div>
             <div class="input-meta">
               <label>Aporte Mensal (R$)</label>
-              <input type="number" id="aporteMensal" value="500" inputmode="decimal"/>
+              <input type="number" id="aporteMensal" placeholder="ex: 500" inputmode="decimal"/>
             </div>
           </div>
 
@@ -596,7 +611,7 @@
             <div class="input-icon" style="background:var(--amber-dim)">%</div>
             <div class="input-meta">
               <label>Taxa de Juros Anual (%)</label>
-              <input type="number" id="taxa" step="0.01" value="12" inputmode="decimal"/>
+              <input type="number" id="taxa" step="0.01" placeholder="ex: 12" inputmode="decimal"/>
             </div>
           </div>
 
@@ -604,7 +619,7 @@
             <div class="input-icon" style="background:var(--violet-dim)">🗓</div>
             <div class="input-meta">
               <label>Tempo (anos)</label>
-              <input type="number" id="anos" value="10" inputmode="numeric"/>
+              <input type="number" id="anos" placeholder="ex: 10" inputmode="numeric"/>
             </div>
           </div>
 
@@ -618,16 +633,8 @@
           <div class="input-row">
             <div class="input-icon" style="background:var(--green-dim)">🔁</div>
             <div class="input-meta">
-              <label>Reajuste (%)</label>
-              <input type="number" id="reajuste" step="0.01" value="10" inputmode="decimal"/>
-            </div>
-          </div>
-
-          <div class="input-row">
-            <div class="input-icon" style="background:var(--blue-dim)">📅</div>
-            <div class="input-meta">
-              <label>A cada quantos anos?</label>
-              <input type="number" id="periodoReajuste" value="1" inputmode="numeric"/>
+              <label>Reajuste (%) a cada 12 meses</label>
+              <input type="number" id="reajuste" step="0.01" placeholder="ex: 10" inputmode="decimal"/>
             </div>
           </div>
 
@@ -766,12 +773,14 @@
   function calcular() {
     const saldoInicial  = parseFloat(document.getElementById('saldoInicial').value)  || 0;
     let   aporteMensal  = parseFloat(document.getElementById('aporteMensal').value)  || 0;
-    const taxaAnual     = parseFloat(document.getElementById('taxa').value)           / 100;
-    const anos          = parseInt(document.getElementById('anos').value)             || 1;
-    const reajuste      = parseFloat(document.getElementById('reajuste').value)       / 100;
-    const periodoReajuste = parseInt(document.getElementById('periodoReajuste').value) || 1;
+    const taxaAnual     = parseFloat(document.getElementById('taxa').value)           || 0;
+    const anos          = parseInt(document.getElementById('anos').value)             || 0;
+    const reajuste      = parseFloat(document.getElementById('reajuste').value)       || 0;
 
-    const taxaMensal = Math.pow(1 + taxaAnual, 1 / 12) - 1;
+    // Precisa de pelo menos taxa e tempo para calcular
+    if (anos === 0 || taxaAnual === 0) return;
+
+    const taxaMensal = Math.pow(1 + taxaAnual / 100, 1 / 12) - 1;
     let saldo = saldoInicial;
     let totalInvestido = saldoInicial;
     const totalMeses = anos * 12;
@@ -788,8 +797,9 @@
       totalInvestido += aporteMensal;
       saldo *= (1 + taxaMensal);
 
-      if (mes % (periodoReajuste * 12) === 0) {
-        aporteMensal *= (1 + reajuste);
+      // Reajuste fixo anualizado: sempre a cada 12 meses
+      if (reajuste > 0 && mes % 12 === 0) {
+        aporteMensal *= (1 + reajuste / 100);
       }
 
       const jurosAtual = saldo - totalInvestido;
@@ -983,13 +993,10 @@
         });
 
       } catch (_) {
-        // SW indisponível no ambiente de preview — funciona normalmente em produção
+        // falha ao registrar SW (ex: HTTPS obrigatório) — ignora detecção de atualização
       }
     });
   }
-
-  // Trigger on load
-  calcular();
 </script>
 </body>
 </html>
